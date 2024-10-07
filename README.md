@@ -1,4 +1,4 @@
-# Xlsx-parse-js
+# Xlsx-to-js
 
 A TypeScript-based library for parsing Excel (XLSX) with browser support.
 
