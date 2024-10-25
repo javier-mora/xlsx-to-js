@@ -97,7 +97,9 @@ export function getPositionInArray(cell: string): { row: number, col: number } {
 
 export function getElementByName(children?: Element | Document, name?: string) {
   if (children && name) {
-      return [...children.getElementsByTagName(name)][0];
+    const e = [...children.getElementsByTagName(name)][0];
+    const x = [...children.getElementsByTagName(`x:${name}`)][0];
+    return e ?? x;
   } else {
       return undefined;
   }
@@ -105,8 +107,10 @@ export function getElementByName(children?: Element | Document, name?: string) {
 
 export function getElementsByName(children?: Element | Document, name?: string) {
   if (children && name) {
-      return [...children.getElementsByTagName(name)];
+    const e = [...children.getElementsByTagName(name)];
+    const x = [...children.getElementsByTagName(`x:${name}`)];
+    return ((e && e.length > 0 ? e : undefined) ?? (x && x.length > 0 ? x : undefined)) ?? [];
   } else {
-      return [];
+    return [];
   }
 }
