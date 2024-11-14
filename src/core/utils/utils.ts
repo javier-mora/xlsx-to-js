@@ -114,3 +114,41 @@ export function getElementsByName(children?: Element | Document, name?: string) 
     return [];
   }
 }
+
+export function getSheetDimension(sheetData: Element): string {
+  const cellElements = sheetData.querySelectorAll("c[r]");
+  
+  if (cellElements.length === 0) return "";
+
+  let minRow = Number.MAX_VALUE, maxRow = Number.MIN_VALUE;
+  let minCol = "Z", maxCol = "A";
+
+  const parseCellReference = (ref: string): { col: string, row: number } => {
+    const match = ref.match(/^([A-Z]+)(\d+)$/);
+    if (!match) throw new Error(`Invalid cell reference: ${ref}`);
+    const [_, col, row] = match;
+    return { col, row: parseInt(row, 10) };
+  };
+
+  cellElements.forEach(cell => {
+    const cellRef = cell.getAttribute("r");
+    if (cellRef) {
+      const { col, row } = parseCellReference(cellRef);
+
+      minRow = Math.min(minRow, row);
+      maxRow = Math.max(maxRow, row);
+
+      if (col < minCol) minCol = col;
+      if (col > maxCol) maxCol = col;
+    }
+  });
+
+  return `${minCol}${minRow}:${maxCol}${maxRow}`;
+}
+
+export function excelSerialToJSDate(serial: number): Date {
+  const excelStartDate = new Date(1900, 0, 1);
+  const jsDate = new Date(excelStartDate.getTime() + (serial - 2) * 24 * 60 * 60 * 1000);
+  
+  return jsDate;
+}

@@ -2,7 +2,7 @@ import { Theme } from "../theme/types";
 import { argbToHex, hexToRgb, rgbToHex } from "../utils";
 
 export const getColor = (e: Element | undefined, themes: Theme[]): string => {
-    const defaultColor = "#FFFFFFFF";
+    const defaultColor = "#FF000000";
     // undefined
     if (e === undefined) return '';
     // indexed

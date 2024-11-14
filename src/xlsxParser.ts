@@ -75,6 +75,7 @@ export class XlsxParser {
                 const nSheet = parseWorksheetXml(xml, style, sharedStrings, options.dense ?? false);
                 workbook.workSheets[i].dimention = nSheet.dimention;
                 workbook.workSheets[i].columnStyles = nSheet.columnStyles;
+                workbook.workSheets[i].rowStyles = nSheet.rowStyles;
                 workbook.workSheets[i].data = nSheet.data;
                 workbook.workSheets[i].mergeCells = nSheet.mergeCells;
             }

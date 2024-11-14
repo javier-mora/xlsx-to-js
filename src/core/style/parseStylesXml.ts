@@ -28,12 +28,16 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
             const color = getElementByName(x, 'color');
             const name = getElementByName(x, 'name');
             const family = getElementByName(x, 'family');
+            const bold = getElementByName(x, 'b');
+            const italic = getElementByName(x, 'i');
 
             styleSheet.fonts.push({
                 size: +(sz?.getAttribute('val') ?? 0),
                 color: getColor(color, themes),
                 name: name?.getAttribute('val') ?? '',
                 family: +(family?.getAttribute('val') ?? 0),
+                bold: bold !== undefined && bold !== null,
+                italic: italic !== undefined && italic !== null,
             });
         })
     }
@@ -93,6 +97,7 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
 
     if (xfsArray) {
         xfsArray.forEach(x => {
+            const alignment = getElementByName(x, 'alignment');
             styleSheet.cells.push({
                 numFmtId: +(x.getAttribute('numFmtId') ?? 0),
                 fontId: +(x.getAttribute('fontId') ?? 0),
@@ -103,6 +108,13 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
                 applyBorder: +(x.getAttribute('applyBorder') ?? 0),
                 applyAlignment: +(x.getAttribute('applyAlignment') ?? 0),
                 applyFill: +(x.getAttribute('applyFill') ?? 0),
+                alignment: alignment
+                    ? {
+                        horizontal: alignment?.getAttribute('horizontal') ?? '',
+                        vertical: alignment?.getAttribute('vertical') ?? 'bottom',
+                        wrapText: (alignment?.getAttribute('wrapText') ?? '0') === '1',
+                    }
+                    : undefined, 
             });
         })
     }

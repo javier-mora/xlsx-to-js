@@ -11,6 +11,18 @@ export const parseThemeXml = (str: string): Theme[] => {
 
     if (clrSchemeArray) {
         clrSchemeArray.forEach(x => {
+            // lt1 (Light 1)
+            if (getElementByName(x, 'a:lt1')) {
+                const elem = getElementByName(x, 'a:lt1');
+                const sysClr = getElementByName(elem, 'a:sysClr');
+                const srgbClr = getElementByName(elem, 'a:srgbClr');
+                const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? '';
+                themes.push({
+                    id: 0,
+                    name: 'lt1',
+                    val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
+                });
+            }
             // dk1 (Dark 1)
             if (getElementByName(x, 'a:dk1')) {
                 const elem = getElementByName(x, 'a:dk1');
@@ -19,32 +31,8 @@ export const parseThemeXml = (str: string): Theme[] => {
                 const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? ''
 
                 themes.push({
-                    id: 0,
-                    name: 'dk1',
-                    val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
-                });
-            }
-            // lt1 (Light 1)
-            if (getElementByName(x, 'a:lt1')) {
-                const elem = getElementByName(x, 'a:lt1');
-                const sysClr = getElementByName(elem, 'a:sysClr');
-                const srgbClr = getElementByName(elem, 'a:srgbClr');
-                const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? '';
-                themes.push({
                     id: 1,
-                    name: 'lt1',
-                    val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
-                });
-            }
-            // dk2 (Dark 2)
-            if (getElementByName(x, 'a:dk2')) {
-                const elem = getElementByName(x, 'a:dk2');
-                const sysClr = getElementByName(elem, 'a:sysClr');
-                const srgbClr = getElementByName(elem, 'a:srgbClr');
-                const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? '';
-                themes.push({
-                    id: 2,
-                    name: 'dk2',
+                    name: 'dk1',
                     val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
                 });
             }
@@ -55,8 +43,20 @@ export const parseThemeXml = (str: string): Theme[] => {
                 const srgbClr = getElementByName(elem, 'a:srgbClr');
                 const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? '';
                 themes.push({
-                    id: 3,
+                    id: 2,
                     name: 'lt2',
+                    val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
+                });
+            }
+            // dk2 (Dark 2)
+            if (getElementByName(x, 'a:dk2')) {
+                const elem = getElementByName(x, 'a:dk2');
+                const sysClr = getElementByName(elem, 'a:sysClr');
+                const srgbClr = getElementByName(elem, 'a:srgbClr');
+                const rgbColor = sysClr?.getAttribute('lastClr') ?? srgbClr?.getAttribute('val') ?? '';
+                themes.push({
+                    id: 3,
+                    name: 'dk2',
                     val: rgbColor !== '' ? ('#FF' + rgbColor) : '',
                 });
             }

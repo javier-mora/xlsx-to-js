@@ -45,12 +45,20 @@ interface CellStyle {
     fontName: string;
     /** Font size. */
     fontSize: number;
+    /** Font color. */
+    fontColor: string;
     /** Vertical alignment. */
     vAlign: string;
     /** Horizontal alignment. */
     hAlign: string;
     /** Cell border format (left, right, top, bottom, diagonal). */
     border: CellBorder;
+    /** A boolean value indicating if the text in a cell should be line-wrapped within the cell. */
+    wrapText: boolean;
+    /** Bold. */
+    bold: boolean;
+    /** Italic. */
+    italic: boolean;
 }
 
 interface CellData {
@@ -82,4 +90,8 @@ export interface WorkSheet {
     rowStyles: RowStyle[];
     /** Merge cells. */
     mergeCells: string[];
+    /** Default column width */
+    defaultColWidth: number;
+    /** Default row height */
+    defaultRowHeight: number;
 }

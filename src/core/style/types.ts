@@ -7,6 +7,10 @@ export interface FontStyleSheet {
     name: string;
     /** Font family number. */
     family: number;
+    /** Bold. */
+    bold: boolean;
+    /** Italic. */
+    italic: boolean;
 }
 
 export interface FillStyleSheet {
@@ -38,6 +42,15 @@ export interface BorderStyleSheet {
     diagonal: BorderOption;
 }
 
+export interface AlignmentOption {
+    /** Represents the horizontal alignment setting. */
+    horizontal: string;
+    /** Represents the vertical alignment setting. */
+    vertical: string;
+    /** A boolean value indicating if the text in a cell should be line-wrapped within the cell. */
+    wrapText: boolean;
+}
+
 export interface CellStyleSheet {
     /** Id of the number format (numFmt) record used by this cell format. */
     numFmtId: number;
@@ -57,6 +70,8 @@ export interface CellStyleSheet {
     applyAlignment: number;
     /** A boolean value indicating whether the fill formatting specified for this xf should be applied. */
     applyFill: number;
+    /** Formatting information pertaining to text alignment in cells. */
+    alignment?: AlignmentOption;
 }
 
 export interface StyleSheet {
