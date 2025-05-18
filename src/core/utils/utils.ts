@@ -152,3 +152,12 @@ export function excelSerialToJSDate(serial: number): Date {
   
   return jsDate;
 }
+
+export function positionFromExt(start: { col: number; row: number }, extValue?: string | null): number {
+  const EMU_PER_PIXEL = 9525;
+  const extInPx = extValue ? parseInt(extValue, 10) / EMU_PER_PIXEL : 0;
+  const CELL_WIDTH_PX = 64;
+  const CELL_HEIGHT_PX = 20;
+
+  return start.col + Math.floor(extInPx / CELL_WIDTH_PX);
+}

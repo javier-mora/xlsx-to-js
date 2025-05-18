@@ -1,6 +1,14 @@
+import { Drawing } from "../drawing/types";
+
 export interface RowStyle {
+    /** Row position. */
+    r: number;
     /** Row height. */
     height: number;
+    /** Indicates whether the row should be hidden */
+    hidden: boolean;
+    /** Indicates whether the row should be collapsed */
+    collapsed: boolean;
 }
 
 export interface ColStyle {
@@ -94,4 +102,8 @@ export interface WorkSheet {
     defaultColWidth: number;
     /** Default row height */
     defaultRowHeight: number;
+    /** 'true' if rows are hidden by default */
+    zeroHeight: boolean;
+    /** Drawings */
+    drawings: Drawing[];
 }

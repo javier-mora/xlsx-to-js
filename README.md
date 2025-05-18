@@ -21,15 +21,17 @@ import { XlsxParser } from "xlsx-to-js";
 Extract data from spreadsheet bytes
 ```javascript
 const xlsxParser = new XlsxParser();
-const workbook = await xlsxParser.readFile(file, { dense: true, styles: true });
+const workbook = await xlsxParser.readFile(file, { dense: true, styles: true, drawings: true, skipHiddenRows: true });
 ```
 The `readFile` method extract data from spreadsheet bytes stored in a `ArrayBuffer`.
 
 The second argument to `options` accepts the properties:
-|Option  |Default |Description|
-|--------|--------|-----------|
-|dense   |false   | When the option `dense: false` is passed, parsers will skip empty cells. |
-|styles  |false   | When the opction `styles: false` is passed, parsers will skip cell styles. |
+|Option         |Default    |Description|
+|---------------|-----------|-----------|
+|dense          |false      | When the option `dense: false` is passed, parsers will skip empty cells. |
+|styles         |false      | When the opction `styles: false` is passed, parsers will skip cell styles. |
+|drawings       |false      | When the option `drawings: false` is passed, parsers will skip parsing drawings and graphical objects. |
+|skipHiddenRows |false      | When the option `skipHiddenRows: true` is passed, hidden rows will be ignored during parsing. |
 
 
 ## References

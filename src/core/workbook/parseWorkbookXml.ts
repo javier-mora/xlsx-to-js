@@ -20,8 +20,10 @@ export const parseWorkbookXml = (str: string): Workbook => {
                 columnStyles: [],
                 rowStyles: [],
                 mergeCells: [],
+                drawings: [],
                 defaultColWidth: 12.5,
                 defaultRowHeight: 3.25,
+                zeroHeight: false,
             });
         });
     }
