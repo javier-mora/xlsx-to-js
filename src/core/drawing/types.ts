@@ -40,6 +40,12 @@ export interface Drawing {
     base64: string;
     /** Position */
     position: DrawingPosition;
+    /** Anchor type */
+    anchorType?: 'oneCell' | 'twoCell' | 'absolute';
+    /** Size in EMUs for oneCellAnchor */
+    sizeEMU?: { cx: number; cy: number };
+    /** Absolute position in EMUs (for absoluteAnchor) */
+    absEMU?: { x: number; y: number };
     /** Specific properties by type */
     properties?: Record<string, any>;
 }

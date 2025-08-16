@@ -21,8 +21,9 @@ export const parseWorkbookXml = (str: string): Workbook => {
                 rowStyles: [],
                 mergeCells: [],
                 drawings: [],
-                defaultColWidth: 12.5,
-                defaultRowHeight: 3.25,
+                defaultColWidth: 8.43, // Excel default
+                baseColWidth: 8, // typical base width in chars
+                defaultRowHeight: 15, // points
                 zeroHeight: false,
             });
         });

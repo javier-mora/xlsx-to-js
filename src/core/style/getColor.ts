@@ -89,13 +89,18 @@ export const getColor = (e: Element | undefined, themes: Theme[]): string => {
 
         const rgb = hexToRgb(argbToHex(themeArgb));
         const tint = +(e.getAttribute('tint') ?? 0);
-        if (tint < 0) {
-            rgb.r =  rgb.r * (1.0 - tint);
-        }
-        if (tint > 0) {
-            rgb.r = rgb.r * (1.0 - tint) + (255 - 255 * (1.0 - tint));
-            rgb.g = rgb.g * (1.0 - tint) + (255 - 255 * (1.0 - tint));
-            rgb.b = rgb.b * (1.0 - tint) + (255 - 255 * (1.0 - tint));
+
+        if (tint !== 0) {
+            if (tint < 0) {
+                const factor = 1.0 + tint; // darken
+                rgb.r = Math.round(rgb.r * factor);
+                rgb.g = Math.round(rgb.g * factor);
+                rgb.b = Math.round(rgb.b * factor);
+            } else { // tint > 0, lighten
+                rgb.r = Math.round(rgb.r * (1.0 - tint) + 255 * tint);
+                rgb.g = Math.round(rgb.g * (1.0 - tint) + 255 * tint);
+                rgb.b = Math.round(rgb.b * (1.0 - tint) + 255 * tint);
+            }
         }
 
         return rgbToHex(rgb.r, rgb.g, rgb.b);

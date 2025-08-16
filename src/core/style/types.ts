@@ -83,4 +83,8 @@ export interface StyleSheet {
     borders: BorderStyleSheet[];
     /** Cell styles. */
     cells: CellStyleSheet[];
+    /** Default (Normal) font family if resolvable. */
+    defaultFontName?: string;
+    /** Default (Normal) font size in points if resolvable. */
+    defaultFontSize?: number;
 }

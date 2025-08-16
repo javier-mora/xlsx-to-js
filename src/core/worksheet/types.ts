@@ -100,10 +100,16 @@ export interface WorkSheet {
     mergeCells: string[];
     /** Default column width */
     defaultColWidth: number;
+    /** Base column width (characters of '0' in Normal font) */
+    baseColWidth: number;
     /** Default row height */
     defaultRowHeight: number;
     /** 'true' if rows are hidden by default */
     zeroHeight: boolean;
     /** Drawings */
     drawings: Drawing[];
+    /** Default (Normal) font family if resolvable */
+    defaultFontName?: string;
+    /** Default (Normal) font size in points if resolvable */
+    defaultFontSize?: number;
 }

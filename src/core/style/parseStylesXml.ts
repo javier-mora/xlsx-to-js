@@ -16,11 +16,15 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
     const fontsElement = getElementByName(styleSheetElement, 'fonts');
     const fillsElement = getElementByName(styleSheetElement, 'fills');
     const bordersElement = getElementByName(styleSheetElement, 'borders');
+    const cellStylesElement = getElementByName(styleSheetElement, 'cellStyles');
+    const cellStyleXfsElement = getElementByName(styleSheetElement, 'cellStyleXfs');
     const cellXfsElement = getElementByName(styleSheetElement, 'cellXfs');
     const fontsArray = getElementsByName(fontsElement, 'font');
     const fillsArray = getElementsByName(fillsElement, 'fill');
     const bordersArray = getElementsByName(bordersElement, 'border');
     const xfsArray = getElementsByName(cellXfsElement, 'xf');
+    const cellStyleXfsArray = getElementsByName(cellStyleXfsElement, 'xf');
+    const cellStylesArray = getElementsByName(cellStylesElement, 'cellStyle');
 
     if (fontsArray) {
         fontsArray.forEach(x => {
@@ -98,6 +102,9 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
     if (xfsArray) {
         xfsArray.forEach(x => {
             const alignment = getElementByName(x, 'alignment');
+            const horizontal = alignment?.getAttribute('horizontal') ?? '';
+            const vertical = alignment?.getAttribute('vertical') ?? 'bottom';
+            const horizontalNorm = horizontal === 'centerContinuous' ? 'center' : (horizontal === 'distributed' ? 'justify' : horizontal);
             styleSheet.cells.push({
                 numFmtId: +(x.getAttribute('numFmtId') ?? 0),
                 fontId: +(x.getAttribute('fontId') ?? 0),
@@ -110,14 +117,27 @@ export const parseStylesXml = (str: string, themes: Theme[]): StyleSheet => {
                 applyFill: +(x.getAttribute('applyFill') ?? 0),
                 alignment: alignment
                     ? {
-                        horizontal: alignment?.getAttribute('horizontal') ?? '',
-                        vertical: alignment?.getAttribute('vertical') ?? 'bottom',
+                        horizontal: horizontalNorm,
+                        vertical: vertical,
                         wrapText: (alignment?.getAttribute('wrapText') ?? '0') === '1',
                     }
                     : undefined, 
             });
         })
     }
+
+    // Resolve Normal style default font
+    try {
+        const normalStyle = cellStylesArray.find(cs => (cs.getAttribute('name') || '').toLowerCase() === 'normal');
+        const xfId = normalStyle ? +(normalStyle.getAttribute('xfId') || '0') : 0;
+        const xf = cellStyleXfsArray[xfId];
+        const fontId = xf ? +(xf.getAttribute('fontId') || '0') : 0;
+        const f = styleSheet.fonts[fontId];
+        if (f) {
+            styleSheet.defaultFontName = f.name;
+            styleSheet.defaultFontSize = f.size;
+        }
+    } catch {}
 
     return styleSheet;
 };

@@ -13,8 +13,9 @@ export const parseWorksheetXml = (str: string, relStr: string | undefined, style
         rowStyles: [],
         mergeCells: [],
         drawings: [],
-        defaultColWidth: 12.5,
-        defaultRowHeight: 3.25,
+        defaultColWidth: 8.43,
+        baseColWidth: 8,
+        defaultRowHeight: 15,
         zeroHeight: false,
     };
     const xmlDoc = new DOMParser().parseFromString(str, 'text/xml');
@@ -47,9 +48,14 @@ export const parseWorksheetXml = (str: string, relStr: string | undefined, style
     }
 
     if (sheetFormatPrElement) {
-        const baseColWidth = +(sheetFormatPrElement.getAttribute('baseColWidth') ?? 10);
-        worksheet.defaultColWidth = +(sheetFormatPrElement.getAttribute('defaultColWidth') ?? (baseColWidth + 5));
-        worksheet.defaultRowHeight = +(sheetFormatPrElement.getAttribute('defaultRowHeight') ?? 3.25);
+        const baseColWidthAttr = sheetFormatPrElement.getAttribute('baseColWidth');
+        const defaultColWidthAttr = sheetFormatPrElement.getAttribute('defaultColWidth');
+        const defaultRowHeightAttr = sheetFormatPrElement.getAttribute('defaultRowHeight');
+
+        if (baseColWidthAttr !== null) worksheet.baseColWidth = +baseColWidthAttr;
+        if (defaultColWidthAttr !== null) worksheet.defaultColWidth = +defaultColWidthAttr;
+        if (defaultRowHeightAttr !== null) worksheet.defaultRowHeight = +defaultRowHeightAttr;
+
         worksheet.zeroHeight = sheetFormatPrElement.getAttribute('zeroHeight') === "1";
     }
 
@@ -72,6 +78,15 @@ export const parseWorksheetXml = (str: string, relStr: string | undefined, style
             const index = +(x.getAttribute('r') ?? 0) - 1;
             const hiddenProp = (x.getAttribute('hidden') ?? 'false') === 'true';
             const collapsedProp = (x.getAttribute('collapsed') ?? 'false') === 'true';
+    
+    // Propagate default font info if available from stylesheet
+    try {
+        // styleSheet is in closure via parameter
+        // @ts-ignore
+        if ((styleSheet as any).defaultFontName) worksheet.defaultFontName = (styleSheet as any).defaultFontName;
+        // @ts-ignore
+        if ((styleSheet as any).defaultFontSize) worksheet.defaultFontSize = (styleSheet as any).defaultFontSize;
+    } catch {}
 
             if (index >= 0 && (!skipHiddenRows || (!hiddenProp && !collapsedProp))) {
                 const cols = getElementsByName(x, 'c');
